@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  stocks-db:
+    image: "postgres"
+    container_name: "stocks"
+    environment:
+      - POSTGRES_USER=diellza
+      - POSTGRES_PASSWORD=diellza123
+      - POSTGRES_DB=stocks
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
