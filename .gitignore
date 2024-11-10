@@ -3,4 +3,4 @@ venv/Lib
 venv/Scripts/
 pyvenv.cfg
 
-postgres-data/
+

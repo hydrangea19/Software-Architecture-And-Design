@@ -4,16 +4,19 @@ from django.db import models
 
 class Issuer(models.Model):
 
+    class Meta:
+        app_label = 'dians'
+
     code = models.CharField(max_length=15)
     date = models.DateField()
-    last_price = models.DecimalField(max_digits=15,decimal_places=3)
-    maximum = models.DecimalField(max_digits=15,decimal_places=3)
-    minimum = models.DecimalField(max_digits=15, decimal_places=3)
-    average_price = models.DecimalField(max_digits=15, decimal_places=3)
-    percentage_change = models.DecimalField(max_digits=15, decimal_places=3)
-    volume = models.IntegerField()
-    turnover_best = models.IntegerField()
-    total_turnover = models.IntegerField()
+    last_transaction_price = models.DecimalField(max_digits=20,decimal_places=3)
+    max_price = models.DecimalField(max_digits=20,decimal_places=3)
+    min_price = models.DecimalField(max_digits=20, decimal_places=3)
+    avg_price = models.DecimalField(max_digits=20, decimal_places=3)
+    percentage_change = models.DecimalField(max_digits=20, decimal_places=3)
+    quantity = models.DecimalField(max_digits=20, decimal_places=3)
+    best_traded = models.DecimalField(max_digits=20, decimal_places=3)
+    total_traded = models.DecimalField(max_digits=20, decimal_places=3)
 
     def __str__(self):
         return self.code
