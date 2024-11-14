@@ -65,7 +65,7 @@ async def fetch_data_for_code(session, url, start_date, end_date, code):
 async def fetch_all_data(dropdown_values):
     date_ranges = generate_date_ranges(start_years_ago=10)
 
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(limit=200)) as session:
         tasks = []
 
         for code in dropdown_values:
