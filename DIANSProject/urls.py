@@ -16,7 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import include
+from Domashna1.dians.views import get_issuers, get_issuer, add_issuer, update_issuer, delete_issuer
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('issuers/', get_issuers, name="get-issuers"),
+    path('issuers/<int:id>/', get_issuer, name='get-issuer'),
+    path('issuers/add/', add_issuer, name='add-issuer'),
+    path('issuers/update/<int:id>/', update_issuer, name='update-issuer'),
+    path('issuers/delete/<int:id>/', delete_issuer, name='delete-issuer'),
 ]
