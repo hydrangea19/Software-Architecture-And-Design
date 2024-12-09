@@ -1,106 +1,118 @@
 import os
-import re
-from textblob import TextBlob
+import xml.etree.ElementTree as ET
+from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+import string
+import spacy
+from transformers import pipeline
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.decomposition import LatentDirichletAllocation
 
 
+sia = SentimentIntensityAnalyzer()
+stop_words = set(stopwords.words('english'))
+nlp = spacy.load("en_core_web_sm")
+bert_sentiment = pipeline("sentiment-analysis", model="distilbert/distilbert-base-uncased-finetuned-sst-2-english")
+
+# Function to clean text
 def clean_text(text):
     text = text.lower()
-    text = re.sub(r'\s+', ' ', text)
-    text = re.sub(r'[^\w\s]', '', text)
-    return text
+    text = text.translate(str.maketrans('', '', string.punctuation))
+    tokens = word_tokenize(text)
+    tokens = [word for word in tokens if word not in stop_words]
+    return ' '.join(tokens)
 
+# Function to extract company data from XML reports
+def extract_company_data_from_reports(folder_path):
+    company_data = {}
+    for filename in os.listdir(folder_path):
+        if filename.endswith('.xml'):
+            file_path = os.path.join(folder_path, filename)
+            tree = ET.parse(file_path)
+            root = tree.getroot()
 
+            for company in root.findall('.//Company'):
+                name = company.find('Name').text if company.find('Name') is not None else "Unknown"
+                value = company.find('Value').text if company.find('Value') is not None else "0"
+                company_data[name] = float(value)
 
-def load_news(file_path):
-    with open(file_path, 'r', encoding='utf-8') as f:
-        news_data = f.read().split("\n\n")
-    return news_data
+    return company_data
 
+# Function for NER-based company extraction
+def extract_company_name_from_article(article):
+    doc = nlp(article)
+    companies = []
+    for ent in doc.ents:
+        if ent.label_ == "ORG":
+            companies.append(ent.text)
+    return companies
 
-def extract_description_and_shares(news_item):
-    lines = news_item.split("\n")
-    description_start = False
-    description = ""
-    number_of_shares = 0
-    for line in lines:
-        if line.startswith("Опис:"):
-            description_start = True
-            description = line[5:].strip()
-        elif description_start:
-            description += " " + line.strip()
+# Function to analyze sentiment using BERT-based model
+def analyze_sentiment_bert(description):
+    result = bert_sentiment(description)
+    return result[0]['label'], result[0]['score']
 
+# Function to perform topic modeling
+def perform_topic_modeling(texts, n_topics=3):
+    vectorizer = CountVectorizer(stop_words='english')
+    X = vectorizer.fit_transform(texts)
+    lda = LatentDirichletAllocation(n_components=n_topics, random_state=42)
+    lda.fit(X)
+    return lda, vectorizer
 
-        if 'обични акции' in line:
-            matches = re.findall(r'\d+', line)
-            if matches:
-                number_of_shares += int(matches[0])
-
-    return description, number_of_shares
-
-
-def analyze_sentiment(text):
-    blob = TextBlob(text)
-    sentiment = blob.sentiment.polarity
-    return sentiment
-
-
-
-def generate_recommendation(sentiment, description, number_of_shares):
-
-    positive_keywords = ["откуп", "позитивен", "раст", "добивка", "сопствени акции", "поволни", "зголемување"]
-    negative_keywords = ["падна", "проблем", "негативен", "пад", "губиток", "лоши", "криза", "поради"]
-
-
-    if any(keyword in description for keyword in positive_keywords):
+# Function to generate recommendation based on sentiment and company value
+def generate_recommendation(sentiment_score, company_value):
+    if sentiment_score == 'POSITIVE':
         return "BUY"
-    elif any(keyword in description for keyword in negative_keywords):
-        return "SELL"
-
-
-    if sentiment > 0.2 or number_of_shares > 100:
-        return "BUY"
-    elif sentiment < -0.2 or number_of_shares < 100:
+    elif sentiment_score == 'NEGATIVE':
         return "SELL"
     else:
         return "HOLD"
 
-
 def main():
-    news_data = load_news('news.txt')
-    descriptions_and_shares = [extract_description_and_shares(news_item) for news_item in news_data]
-    cleaned_descriptions = [clean_text(description) for description, _ in descriptions_and_shares]
-    number_of_shares = [shares for _, shares in descriptions_and_shares]
-    sentiments = [analyze_sentiment(description) for description in cleaned_descriptions]
+    reports_folder = "downloaded_reports"
+    company_data = extract_company_data_from_reports(reports_folder)
 
-    recommendations = [
-        generate_recommendation(sentiment, description, shares)
-        for sentiment, description, shares in zip(sentiments, cleaned_descriptions, number_of_shares)
-    ]
+    news_file = "news.txt"
+    with open(news_file, "r", encoding="utf-8") as file:
+        news_articles = file.read().split('\n\n')
 
+    results = []
 
-    positive_recommendations = recommendations.count("BUY")
-    negative_recommendations = recommendations.count("SELL")
-    neutral_recommendations = recommendations.count("HOLD")
+    for article in news_articles:
 
+        description = article.split("Опис:")[1].strip() if "Опис:" in article else article.strip()
+        cleaned_description = clean_text(description)  # Clean the description
 
-    positive_texts = [description for description, sentiment in zip(cleaned_descriptions, sentiments) if sentiment > 0]
-    negative_texts = [description for description, sentiment in zip(cleaned_descriptions, sentiments) if sentiment < 0]
+        if not cleaned_description:
+            print(f"Empty text after cleaning: {description}")
+            continue
 
+        companies_mentioned = extract_company_name_from_article(article)
+        sentiment_label, sentiment_score = analyze_sentiment_bert(cleaned_description)
 
-    with open('sentiment_analysis_results.txt', 'w', encoding='utf-8') as f:
-        f.write(f"Positive news and reports: {positive_recommendations}\n")
-        f.write(f"Negative news and reports: {negative_recommendations}\n")
-        f.write(f"Neutral recommendations: {neutral_recommendations}\n")
-        f.write("\nExample of Positive Text:\n")
-        f.write(f"{positive_texts[:1]}\n")
-        f.write("\nExample of Negative Text:\n")
-        f.write(f"{negative_texts[:1]}\n")
-        f.write("\nRecommendations:\n")
-        for recommendation in recommendations:
-            f.write(f"{recommendation}\n")
+        for company_name in companies_mentioned:
+            company_value = company_data.get(company_name, 0)
+            recommendation = generate_recommendation(sentiment_label, company_value)
 
-    print("Sentiment analysis results saved to sentiment_analysis_results.txt")
+            results.append({
+                "company": company_name,
+                "description": description,
+                "sentiment_score": sentiment_score,
+                "value": company_value,
+                "recommendation": recommendation
+            })
 
+    with open("sentiment_analysis_results.txt", "w", encoding="utf-8") as file:
+        for result in results:
+            file.write(f"Company: {result['company']}\n")
+            file.write(f"Description: {result['description']}\n")
+            file.write(f"Sentiment Score: {result['sentiment_score']}\n")
+            file.write(f"Recommendation: {result['recommendation']}\n")
+            file.write("\n-----------------------------\n")
 
-if __name__ == '__main__':
+    print("Sentiment analysis and recommendations completed! Results saved to sentiment_analysis_results.txt")
+
+if __name__ == "__main__":
     main()

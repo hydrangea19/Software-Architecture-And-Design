@@ -4,16 +4,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import os
+import pandas as pd
 import requests
 from concurrent.futures import ThreadPoolExecutor
 import traceback
 
 
+# WebDriver setup
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
-
 driver = webdriver.Chrome(options=options)
 driver.get('https://www.mse.mk/mk/reports')
 
@@ -22,20 +23,41 @@ output_folder = "downloaded_reports"
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
+
 def download_report(report_url, report_name):
-    """Download the report file and save it with the specified name."""
+    """Download the report file and convert to CSV if necessary."""
     try:
+
         response = requests.get(report_url, stream=True)
         response.raise_for_status()
-        with open(os.path.join(output_folder, report_name), "wb") as file:
+
+
+        temp_path = os.path.join(output_folder, report_name)
+        with open(temp_path, "wb") as file:
             for chunk in response.iter_content(chunk_size=1024):
                 if chunk:
                     file.write(chunk)
+
         print(f"Downloaded: {report_name}")
+
+
+        try:
+
+            df = pd.read_csv(temp_path, encoding="ISO-8859-1", delimiter=";")  # Adjust delimiter/encoding if needed
+            csv_path = os.path.join(output_folder, f"{os.path.splitext(report_name)[0]}.csv")
+            df.to_csv(csv_path, index=False, encoding="utf-8")
+            print(f"Converted to CSV: {csv_path}")
+
+            os.remove(temp_path)
+
+        except Exception as e:
+            print(f"Could not convert {report_name} to CSV: {e}")
+
     except requests.exceptions.RequestException as e:
         print(f"Failed to download {report_name}: {e}")
     except Exception as e:
         print(f"Unexpected error occurred while downloading {report_name}: {e}")
+
 
 def download_reports():
     """Navigate the site, select report criteria, and download reports."""
