@@ -1,0 +1,174 @@
+.signupContainer {
+  background-color: #fff;
+  display: flex;
+  padding: 61px 0 0;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+}
+
+.logo {
+  aspect-ratio: 0.99;
+  object-fit: contain;
+  object-position: center;
+  width: 163px;
+  max-width: 100%;
+}
+
+.title {
+  color: #333;
+  margin: 55px 0 0;
+  font: 500 40px Roboto, sans-serif;
+}
+
+.formContainer {
+  width: 470px;
+  max-width: 100%;
+  margin: 70px 0 0 24px;
+}
+
+.formGrid {
+  display: flex;
+  gap: 20px;
+}
+
+.labelColumn {
+  display: flex;
+  flex-direction: column;
+  width: 23%;
+}
+
+.inputColumn {
+  display: flex;
+  flex-direction: column;
+  width: 77%;
+  margin-left: 20px;
+}
+
+.formLabel {
+  color: #333;
+  margin: 0 0 40px;
+  font: 500 20px Roboto, sans-serif;
+  padding: 15px 10px;
+}
+
+.formInput {
+  background-color: #fff;
+  padding: 15px 10px;
+  border: 1px solid #b0b0b0;
+  margin: 0 0 40px;
+  font: 500 18px Roboto, sans-serif;
+  color: #333;
+}
+
+.orText {
+  font-size: 28px;
+  align-self: start;
+  margin: 31px 0 0 33px;
+}
+
+.socialButtonsContainer {
+  display: flex;
+  margin-top: 35px;
+  align-items: center;
+  gap: 17px;
+}
+
+.socialButton {
+  border-radius: 25px;
+  background-color: #d7d7d7;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.socialIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  width: 34px;
+}
+
+.signupButton {
+  border-radius: 8px;
+  background-color: #93caef;
+  margin-top: 37px;
+  min-height: 50px;
+  width: 298px;
+  color: #333;
+  padding: 17px 10px;
+  font: 500 14px Roboto, sans-serif;
+  border: none;
+  cursor: pointer;
+}
+
+.footer {
+  background-color: rgba(176, 176, 176, 0.5);
+  width: 100%;
+  display: flex;
+  margin-top: 65px;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 31px 80px;
+}
+
+.copyright {
+  color: #333;
+  margin: auto 0;
+  font: 500 20px Roboto, sans-serif;
+}
+
+.footerSocial {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+}
+
+.footerIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  width: 34px;
+}
+
+@media (max-width: 991px) {
+  .title {
+    margin-top: 40px;
+  }
+
+  .formContainer {
+    margin-top: 40px;
+  }
+
+  .formGrid {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .labelColumn,
+  .inputColumn {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .formLabel {
+    margin-top: 40px;
+  }
+
+  .orText {
+    margin-left: 10px;
+  }
+
+  .footer {
+    margin-top: 40px;
+    padding: 0 20px;
+  }
+
+  .copyright {
+    max-width: 100%;
+  }
+}

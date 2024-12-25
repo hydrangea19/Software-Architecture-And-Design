@@ -1,0 +1,101 @@
+.loginContainer {
+  background-color: #fff;
+  display: flex;
+  padding-top: 61px;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+}
+
+.logo {
+  aspect-ratio: 0.99;
+  object-fit: contain;
+  object-position: center;
+  width: 163px;
+  max-width: 100%;
+  margin-left: 80px;
+}
+
+.title {
+  color: #333;
+  margin-top: 99px;
+  font: 500 40px Roboto, sans-serif;
+}
+.formContainer {
+  width: 483px;
+  max-width: 100%;
+  margin: 99px 0 0 32px;
+}
+
+.formGrid {
+  display: flex;
+  gap: 20px;
+}
+
+.labelColumn {
+  display: flex;
+  flex-direction: column;
+  width: 23%;
+}
+
+.inputColumn {
+  display: flex;
+  flex-direction: column;
+  width: 77%;
+  margin-left: 20px;
+}
+
+.label {
+  color: #333;
+  font: 500 20px Roboto, sans-serif;
+  margin-top: 16px;
+  padding: 15px 10px;
+}
+
+.input {
+  background-color: #fff;
+  padding: 15px 10px;
+  border: 1px solid #b0b0b0;
+  margin-top: 16px;
+  font: 500 18px Roboto, sans-serif;
+}
+
+.submitButton {
+  border-radius: 8px;
+  background-color: #93caef;
+  width: 298px;
+  max-width: 100%;
+  color: #333;
+  padding: 17px 10px;
+  font: 500 14px Roboto, sans-serif;
+  margin-top: 82px;
+  border: none;
+  cursor: pointer;
+  margin-left:100px;
+}
+
+@media (max-width: 991px) {
+  .formContainer {
+    margin-top: 40px;
+  }
+
+  .formGrid {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .labelColumn,
+  .inputColumn {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .input {
+    padding-right: 20px;
+  }
+
+  .submitButton {
+    margin-top: 40px;
+  }
+}

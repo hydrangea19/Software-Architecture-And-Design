@@ -1,0 +1,41 @@
+.exportContainer {
+  display: flex;
+  gap: 22px;
+  margin: 106px 0 0 25px;
+}
+
+.pdfButton,
+.csvButton {
+  padding: 17px 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  width: 238px;
+  transition: opacity 0.2s;
+  font-family: Roboto, sans-serif;
+}
+
+.pdfButton {
+  background-color: #A6CEE3;
+}
+
+.csvButton {
+  background-color: #98B5C4;
+}
+
+.pdfButton:hover,
+.csvButton:hover,
+.pdfButton:focus,
+.csvButton:focus {
+  opacity: 0.9;
+}
+
+@media (max-width: 991px) {
+  .exportContainer {
+    margin: 40px 0 0 10px;
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,135 @@
+.logo{
+  margin-right: 60px;
+}
+.pageContainer {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding-top: 73px;
+
+}
+
+.mainContent {
+  padding: 0 76px;
+  flex: 1;
+}
+
+.headerSection {
+  display: flex;
+  width: 100%;
+  max-width: 1119px;
+  gap: 20px;
+  font-size: 36px;
+  color: #333;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 79px 0 0 48px;
+}
+
+.contentSection {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 47px;
+  flex-wrap: wrap;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #F54E5E;
+  border-radius: 8px;
+  border: none;
+  padding: 13px;
+
+  cursor: pointer;
+  color: #333;
+  font-size: 14px;
+  width: 200px;
+  height: 45px;
+  margin-top: 80px;
+}
+
+
+
+.logoutIcon {
+  width: 24px;
+  height: 24px;
+}
+
+
+.profileContainer {
+  flex: 1;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.fieldContainer {
+  margin-bottom: 16px;
+}
+
+.fieldLabel {
+  font-size: 14px;
+  color: #333;
+}
+
+.fieldValue {
+  font-size: 16px;
+  color: #555;
+}
+.profiletitle{
+  margin-bottom: 60px;
+}
+
+.searchHistoryContainer {
+  flex: 1;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  margin-right: -100px;
+}
+
+.searchHistoryContainer h3 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.historyItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.searchTerm {
+  font-size: 16px;
+  color: #555;
+}
+
+.searchDate {
+  font-size: 14px;
+  color: #777;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+  .mainContent {
+    padding: 0 20px;
+  }
+
+  .headerSection {
+    margin: 40px 0 0;
+    max-width: 100%;
+  }
+
+  .logoutButton {
+    margin: 40px 0 0 10px;
+  }
+
+  .contentSection {
+    flex-direction: column;
+  }
+}
