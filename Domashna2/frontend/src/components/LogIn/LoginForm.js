@@ -7,7 +7,7 @@ function LoginForm() {
      const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/');
+    navigate('/issuers');
   };
     return (
 

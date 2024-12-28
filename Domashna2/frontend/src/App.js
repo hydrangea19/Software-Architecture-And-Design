@@ -13,6 +13,7 @@ import {Reports} from "./components/Reports/Reports";
 import ProfilePage from "./components/Profile/ProfilePage";
 import LoginForm from "./components/LogIn/LoginForm";
 import SignUpForm from "./components/SignUp/SignUpForm";
+import DataAnalysis from "./components/Data/DataAnalysis";
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<StockExchangePage />} />
-          <Route path="/data-analysis" element={<DataAnalysisLayout />} />
+          <Route path="/data-analysis" element={<DataAnalysis />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/issuers/" element={<Issuer />} />

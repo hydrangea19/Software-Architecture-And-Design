@@ -1,13 +1,25 @@
 import instance from '../custom-axios/axios'
 
-export async function getIssuers(page = 1){
+export async function getIssuers(page = 1, search = '', filters = {}){
     try {
-        const response = await instance.get(`/issuers/?page=${page}`);
-        return response.data;
-    } catch (error){
-        console.log("Error fetching issuers: " + error);
-        throw error;
+    let params = { page };
+
+    if (search) {
+      params.search = search;
     }
+
+    Object.keys(filters).forEach((key) => {
+      if (filters[key]) {
+        params[key] = filters[key];
+      }
+    });
+
+    const response = await instance.get('/issuers/', { params });
+    return response.data;
+  } catch (error) {
+    console.log('Error fetching issuers:', error);
+    throw error;
+  }
 }
 export async function getIssuer(id){
     try {
@@ -50,3 +62,16 @@ export async function deleteIssuer(id) {
         throw error;
     }
 }
+export async function getIssuerData(issuerCode, dataField) {
+  try {
+    const response = await instance.get(`/api/issuers/${issuerCode}/data/`, {
+      params: { field: dataField },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching data for issuer ${issuerCode}:`, error);
+    throw error;
+  }
+}
+
+

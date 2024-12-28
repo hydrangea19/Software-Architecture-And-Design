@@ -9,19 +9,13 @@ function Header () {
 
 <nav className="navigation">
   <Link to="/" className="navItem">Home</Link>
+    <Link to="/issuers" className="navItem">Issuers List</Link>
   <Link to="/data-analysis" className="navItem">Data Analysis</Link>
   <Link to="/reports" className="navItem">Reports</Link>
   <Link to="/profile" className="navItem">Profile</Link>
+
 </nav>
-      <div className="searchBar">
-        <div className="searchText">Search</div>
-        <img
-          loading="lazy"
-          src="/icons/search.png"
-          className="searchIcon"
-          alt="Search Icon"
-        />
-      </div>
+
     </header>
   );
 }

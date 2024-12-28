@@ -15,8 +15,8 @@ def generate_date_ranges(start_years_ago=10):
             current_end_date = end_date
 
         date_ranges.append((
-            current_start_date.strftime('%d.%m.%Y'),
-            current_end_date.strftime('%d.%m.%Y')
+            current_start_date.strftime('%Y-%m-%d'),
+            current_end_date.strftime('%Y-%m-%d')
         ))
 
         current_start_date = current_end_date
