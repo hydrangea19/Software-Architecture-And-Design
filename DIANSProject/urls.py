@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
-from Domashna1.dians.views import get_issuers, get_issuer, add_issuer, update_issuer, delete_issuer
+from Domashna1.dians.views import get_issuers, get_issuer, add_issuer, update_issuer, delete_issuer, get_issuer_data, get_unique_codes
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +26,6 @@ urlpatterns = [
     path('issuers/add/', add_issuer, name='add-issuer'),
     path('issuers/update/<int:id>/', update_issuer, name='update-issuer'),
     path('issuers/delete/<int:id>/', delete_issuer, name='delete-issuer'),
+    path('api/issuers/<str:code>/data/', get_issuer_data, name='get_issuer_data'),
+    path('api/issuers/codes/', get_unique_codes, name='get_unique_codes'),
 ]

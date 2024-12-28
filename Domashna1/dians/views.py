@@ -1,7 +1,10 @@
+from django.http import Http404, JsonResponse
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework import filters
+from Domashna1.dians.filterset import IssuerFilter
 from Domashna1.dians.models import Issuer
 from Domashna1.dians.serializers import IssuerSerialzer
 from rest_framework.pagination import PageNumberPagination
@@ -16,6 +19,20 @@ class IssuerPagination(PageNumberPagination):
 @api_view(['GET'])
 def get_issuers(request):
     issuers = Issuer.objects.all()
+    filterset = IssuerFilter(request.GET, queryset=issuers)
+    if filterset.is_valid():
+        issuers = filterset.qs
+    else:
+        return Response(filterset.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    search_query = request.GET.get('search', None)
+    if search_query:
+        issuers = issuers.filter(code__icontains=search_query)
+
+    ordering = request.GET.get('ordering', None)
+    if ordering:
+        issuers = issuers.order_by(ordering)
+
     paginator = IssuerPagination()
     result_page = paginator.paginate_queryset(issuers, request)
     serializer = IssuerSerialzer(result_page, many=True)
@@ -61,6 +78,40 @@ def delete_issuer(request, id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['GET'])
+def get_issuer_data(request, code):
+
+    field = request.query_params.get('field')
+    if not field:
+        return Response({"error": "Field parameter is required."}, status=400)
 
 
+    valid_fields = [
+        'last_transaction_price',
+        'max_price',
+        'min_price',
+        'avg_price',
+        'percentage_change',
+        'quantity',
+        'best_traded',
+        'total_traded',
+    ]
+    if field not in valid_fields:
+        return Response({"error": "Invalid field parameter."}, status=400)
+
+
+    data = Issuer.objects.filter(code__iexact=code).order_by('date').values('date', field)
+
+    if not data:
+        raise Http404("No data found for the given code.")
+
+    return Response(list(data), status=200)
+
+@api_view(['GET'])
+def get_unique_codes(request):
+    try:
+        unique_codes = Issuer.objects.values_list('code', flat=True).distinct()
+        return JsonResponse(list(unique_codes), safe=False)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 

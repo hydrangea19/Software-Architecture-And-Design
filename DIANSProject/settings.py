@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Domashna1.dians',
     'rest_framework',
     'corsheaders',
+    'django_filters',
 
 ]
 
