@@ -1,0 +1,62 @@
+.page {
+  background-color: #fff;
+  display: flex;
+  padding-top: 73px;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+}
+
+.mainContent {
+
+  max-width: 1278px;
+  margin-top: 129px;
+}
+
+.contentGrid {
+  display: flex;
+  gap: 20px;
+}
+
+.infoSection {
+  flex: 1;
+}
+
+.title {
+  font-size: 50px;
+  font-family: Roboto, sans-serif, bold;
+  font-weight: 500;
+  color: #333;
+  margin-right: 10px;
+}
+
+.description {
+  font-size: 20px;
+  font-family: Roboto, sans-serif;
+  color: #333;
+  margin-top: 64px;
+  margin-bottom: 70px;
+}
+
+.seeMoreButton {
+  border-radius: 8px;
+  background-color: #93CAEF;
+  padding: 17px 10px;
+  font-size: 14px;
+  color: #333;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 70px;
+  width: 230px;
+  height: 45px;
+}
+
+.calendarSection {
+  flex: 1;
+}
+
+
+.logo{
+  margin-right: 1900px;
+  margin-top: -50px;
+}

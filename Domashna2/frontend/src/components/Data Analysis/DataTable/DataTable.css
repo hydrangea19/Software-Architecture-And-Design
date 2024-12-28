@@ -1,0 +1,46 @@
+.tableContainer {
+  margin-top: 32px;
+  overflow-x: auto;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  color: #333;
+}
+
+.tableHeader {
+  background-color: rgba(170, 215, 244, 0.5);
+  padding: 12px;
+  text-align: left;
+  font-weight: 500;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tableHeader:hover {
+  background-color: rgba(170, 215, 244, 0.7);
+}
+
+.tableRow {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.tableRow:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.tableRow td {
+  padding: 12px;
+  white-space: nowrap;
+}
+
+@media (max-width: 991px) {
+  .tableContainer {
+    margin-top: 20px;
+  }
+}

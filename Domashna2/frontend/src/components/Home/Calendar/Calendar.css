@@ -1,0 +1,81 @@
+.calendarContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: start;
+  margin-left: -300px;
+  margin-top: 330px;
+}
+
+.calendarHeader {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 40px;
+  justify-content: space-between;
+  color: #333;
+  font: 500 20px Roboto, sans-serif;
+}
+
+.navIcon {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  width: 24px;
+}
+
+.weekDays {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+  color: #b5bec6;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.weekDay {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns, one for each day of the week */
+  gap: 5px;
+  margin-top: 25px;
+  justify-items: center;
+}
+
+.date {
+  width: 30px;  /* Set width and height to make the date cells square */
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4a5660;
+  font-size: 16px;
+  border-radius: 50%; /* Optional: rounded corners for the dates */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover */
+}
+
+.date:hover {
+  background-color: #f1f1f1; /* Light background color on hover */
+  cursor: pointer;
+}
+
+.activeDate {
+  background-color: rgba(238, 217, 43, 1);
+  color: white;
+  font-weight: bold;
+}
+
+@media (max-width: 991px) {
+  .calendarContainer {
+    margin: 40px 0 0 5px;
+  }
+}
