@@ -1,0 +1,75 @@
+.filterContainer {
+  margin-top: 75px;
+}
+
+.filterGroup,
+.chartSelector {
+  margin-bottom: 63px;
+}
+
+.filterTitle {
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 24px;
+  font-family: Roboto, sans-serif;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.filterButton,
+.chartButton {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #FBE064;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  min-width: 144px;
+  transition: background-color 0.2s;
+}
+
+.chartButton {
+  min-width: 180px;
+}
+
+.filterButton:hover,
+.chartButton:hover,
+.filterButton:focus,
+.chartButton:focus {
+  background-color: #F5D43D;
+}
+
+.active {
+  background-color: #F5D43D;
+}
+
+.stockTitle {
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+  margin-top: 107px;
+  margin-left: 39px;
+  font-family: Roboto, sans-serif;
+}
+
+@media (max-width: 991px) {
+  .filterContainer {
+    margin-top: 40px;
+  }
+
+  .buttonGroup {
+    gap: 15px;
+  }
+
+  .stockTitle {
+    margin-top: 40px;
+    margin-left: 10px;
+  }
+}

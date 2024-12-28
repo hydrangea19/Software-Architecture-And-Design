@@ -1,0 +1,25 @@
+.tickerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  margin-top: -550px;
+  align-items: flex-end;
+  margin-left: 900px;
+
+}
+
+.tickerRow {
+  display: flex;
+  gap: 18px;
+  color: #333;
+  font: 400 16px Roboto, sans-serif;
+  justify-content: flex-end; /* Aligns the tickers to the right */
+}
+
+.ticker {
+  border-radius: 8px;
+  background-color: rgba(212, 234, 249, 1);
+  padding: 10px;
+  min-width: 60px;
+  text-align: center;
+}
