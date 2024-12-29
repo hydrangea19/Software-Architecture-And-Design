@@ -22,8 +22,3 @@ class Issuer(models.Model):
         return self.code
 
 
-
-
-
-
-

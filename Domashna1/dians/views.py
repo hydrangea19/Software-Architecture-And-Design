@@ -1,20 +1,25 @@
 from django.http import Http404, JsonResponse
-from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
-from rest_framework import filters
 from Domashna1.dians.filterset import IssuerFilter
 from Domashna1.dians.models import Issuer
-from Domashna1.dians.serializers import IssuerSerialzer
+from Domashna1.dians.serializers import IssuerSerialzer, CustomTokenObtainPairSerializer
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
 
 class IssuerPagination(PageNumberPagination):
     page_size = 20
     page_size_query_param = 'page_size'
     max_page_size = 100
 
-#get issues
+#get issuers
 
 @api_view(['GET'])
 def get_issuers(request):
@@ -39,7 +44,11 @@ def get_issuers(request):
     return paginator.get_paginated_response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def add_issuer(request):
+    if not request.user.is_staff:
+        return JsonResponse({"error": "Only admins can add issuers"}, status=403)
+
     serializer = IssuerSerialzer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -56,7 +65,10 @@ def get_issuer(request, id):
     return Response(serializer.data)
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def update_issuer(request, id):
+    if not request.user.is_staff:
+        return JsonResponse({"error": "Only admins can edit issuers"}, status=403)
     try:
         issuer = Issuer.objects.get(id=id);
     except Issuer.DoesNotExist:
@@ -69,7 +81,10 @@ def update_issuer(request, id):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
 def delete_issuer(request, id):
+    if not request.user.is_staff:
+        return JsonResponse({"error": "Only admins can delete issuers"}, status=403)
     try:
         issuer = Issuer.objects.get(id=id);
         issuer.delete()
