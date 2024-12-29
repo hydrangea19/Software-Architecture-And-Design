@@ -8,7 +8,7 @@ export default function Login() {
     const [error, setError] = useState('');
 
     const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent form submission default behavior
+    e.preventDefault();
 
     try {
         const response = await fetch('http://127.0.0.1:8000/api/token/', {
