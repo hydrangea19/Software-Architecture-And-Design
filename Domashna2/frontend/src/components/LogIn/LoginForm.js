@@ -1,54 +1,66 @@
-import React from 'react';
-import Footer from './Footer/Footer';
-import  './LoginForm.css';
-import {useNavigate} from "react-router-dom";
+import React, { useState } from 'react';
+import './LoginForm.css';
+import logo from '../../assets/logo.png';
 
-function LoginForm() {
-     const navigate = useNavigate();
+export default function Login() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-  const handleClick = () => {
-    navigate('/issuers');
-  };
+    const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent form submission default behavior
+
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/token/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('accessToken', data.access);
+            localStorage.setItem('refreshToken', data.refresh);
+            alert('Login successful!');
+            window.location.href = '/issuers';
+        } else {
+            alert('Login failed. Please check your credentials.');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        alert('An error occurred during login.');
+    }
+};
+
+
     return (
-
-        <div className="loginContainer">
-            <img
-                loading="lazy"
-                src="/logo.png"
-                alt="Company logo"
-                className="logo"
-            />
-            <h1 className="title">Log In</h1>
-
-            <form className="formContainer">
-                <div className="formGrid">
-                    <div className="labelColumn">
-                        <label htmlFor="email" className="label">Email</label>
-                        <label htmlFor="password" className="label">Password</label>
-                    </div>
-                    <div className="inputColumn">
-                        <input
-                            type="email"
-                            id="email"
-                            className="input"
-                            placeholder="emmawilliams@gmail.com"
-                            aria-label="Email input"
-                        />
-                        <input
-                            type="password"
-                            id="password"
-                            className="input"
-                            placeholder="************"
-                            aria-label="Password input"
-                        />
-                    </div>
+        <div className="login-container">
+             <div className="login-logo">
+                <img src={logo} alt="Logo" />
+            </div>
+            <h1>Login</h1>
+            {error && <p className="error">{error}</p>}
+            <form onSubmit={handleLogin}>
+                <div>
+                    <label>Username</label>
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
                 </div>
-                <button type="submit" className="submitButton" onClick={handleClick}>Log In</button>
+                <div>
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit">Login</button>
             </form>
-
-            <Footer/>
         </div>
     );
 }
-
-export default LoginForm;

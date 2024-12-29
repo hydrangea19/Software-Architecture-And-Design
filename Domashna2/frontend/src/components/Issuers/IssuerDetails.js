@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getIssuer } from '../../repository/issuerService';
 import { useParams, useNavigate } from 'react-router-dom';
+import './IssuerDetails.css'
 
 export default function IssuerDetails() {
     const { id } = useParams();
@@ -25,57 +26,31 @@ export default function IssuerDetails() {
   }
 
   return (
-    <div>
-      <h2>Issuer Details</h2>
-      <table>
+   <div className="issuer-details-container">
+      <h2 className="issuer-details-header">Issuer Details</h2>
+      <table className="details-table">
         <tbody>
-          <tr>
-            <th>ID</th>
-            <td>{issuer.id}</td>
-          </tr>
-          <tr>
-            <th>Code</th>
-            <td>{issuer.code}</td>
-          </tr>
-          <tr>
-            <th>Date</th>
-            <td>{issuer.date}</td>
-          </tr>
-          <tr>
-            <th>Last Transaction Price</th>
-            <td>{issuer.last_transaction_price}</td>
-          </tr>
-          <tr>
-            <th>Max Price</th>
-            <td>{issuer.max_price}</td>
-          </tr>
-          <tr>
-            <th>Min Price</th>
-            <td>{issuer.min_price}</td>
-          </tr>
-          <tr>
-            <th>Average Price</th>
-            <td>{issuer.avg_price}</td>
-          </tr>
-          <tr>
-            <th>Percentage Change</th>
-            <td>{issuer.percentage_change}</td>
-          </tr>
-          <tr>
-            <th>Quantity</th>
-            <td>{issuer.quantity}</td>
-          </tr>
-          <tr>
-            <th>Best Traded</th>
-            <td>{issuer.best_traded}</td>
-          </tr>
-          <tr>
-            <th>Total Traded</th>
-            <td>{issuer.total_traded}</td>
-          </tr>
+          {[
+            { label: 'ID', value: issuer.id },
+            { label: 'Code', value: issuer.code },
+            { label: 'Date', value: issuer.date },
+            { label: 'Last Transaction Price', value: issuer.last_transaction_price },
+            { label: 'Max Price', value: issuer.max_price },
+            { label: 'Min Price', value: issuer.min_price },
+            { label: 'Average Price', value: issuer.avg_price },
+            { label: 'Percentage Change', value: issuer.percentage_change },
+            { label: 'Quantity', value: issuer.quantity },
+            { label: 'Best Traded', value: issuer.best_traded },
+            { label: 'Total Traded', value: issuer.total_traded },
+          ].map(({ label, value }) => (
+            <tr key={label}>
+              <th className="details-label">{label}</th>
+              <td className="details-value">{value}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
-      <button onClick={() => navigate('/issuers/')}>Back to List</button>
+      <button className="back-button" onClick={() => navigate('/issuers/')}>Back to List</button>
     </div>
   );
 }

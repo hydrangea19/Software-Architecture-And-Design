@@ -3,6 +3,7 @@ import { getIssuers } from '../../repository/issuerService';
 import {deleteIssuer} from "../../repository/issuerService";
 import './Issuer.css';
 import Header from '../Header/Header';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Issuer() {
 
@@ -12,11 +13,26 @@ export default function Issuer() {
     const [search, setSearch] = useState('');
     const [filters, setFilters] = useState({
         code: '',
-        date: '',
+        start_date: '',
+        end_date: '',
         min_price: '',
         max_price: ''
     });
+    const [isAdmin, setIsAdmin] = useState(false);
 
+    useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+        try {
+            const decoded = jwtDecode(token);
+            console.log('Decoded Token:', decoded);
+            setIsAdmin(decoded.is_staff || false);
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            setIsAdmin(false);
+        }
+    }
+}, []);
 
     useEffect(() => {
         async function fetchIssuers() {
@@ -63,7 +79,7 @@ export default function Issuer() {
         <div className="container">
             <h1 className="header">Issuers</h1>
 
-            {/* Search and Filter Section */}
+            {}
             <div className="search-filter">
                 <input
                     type="text"
@@ -80,9 +96,16 @@ export default function Issuer() {
                 />
                 <input
                     type="date"
-                    name="date"
+                    name="start_date"
                     placeholder="Filter by Date"
-                    value={filters.date}
+                    value={filters.start_date}
+                    onChange={handleFilterChange}
+                />
+                  <input
+                    type="date"
+                    name="end_date"
+                    placeholder="Filter by Date"
+                    value={filters.end_date}
                     onChange={handleFilterChange}
                 />
                 <input
@@ -104,14 +127,15 @@ export default function Issuer() {
                 </button>
             </div>
 
-            {/* Add Issuer Button */}
-            <div className="add-button">
-                <button onClick={() => window.location.href = '/issuers/add/'}>
-                    Add Issuer
-                </button>
-            </div>
+             {isAdmin && (
+                    <div className="add-button">
+                        <button onClick={() => window.location.href = '/issuers/add/'}>
+                            Add Issuer
+                        </button>
+                    </div>
+                )}
 
-            {/* Issuers Table */}
+            {}
             <div className="table-container">
                 <table>
                     <thead>
@@ -144,17 +168,28 @@ export default function Issuer() {
                                 <td>{issuer.best_traded}</td>
                                 <td>{issuer.total_traded}</td>
                                 <td className="actions">
-                                    <button className="details"
-                                            onClick={() => window.location.href = `/issuers/${issuer.id}/`}>
-                                        Details
-                                    </button>
-                                    <button className="edit"
-                                            onClick={() => window.location.href = `/issuers/update/${issuer.id}/`}>
-                                        Edit
-                                    </button>
-                                    <button className="delete" onClick={() => handleDelete(issuer.id)}>
-                                        Delete
-                                    </button>
+                                      <button
+        className="details"
+        onClick={() => window.location.href = `/issuers/${issuer.id}/`}
+    >
+        Details
+    </button>
+                                   {isAdmin && (
+                                                <>
+                                                    <button
+                                                        className="edit"
+                                                        onClick={() => window.location.href = `/issuers/update/${issuer.id}/`}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        className="delete"
+                                                        onClick={() => handleDelete(issuer.id)}
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </>
+                                            )}
                                 </td>
                             </tr>
                         ))

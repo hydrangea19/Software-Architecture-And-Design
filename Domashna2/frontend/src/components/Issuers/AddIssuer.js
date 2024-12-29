@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { addIssuer } from '../../repository/issuerService';
 import { useNavigate } from 'react-router-dom';
+import './AddIssuer.css'
 
 export default function AddIssuer() {
     const [formData, setFormData] = useState({
@@ -35,110 +36,35 @@ export default function AddIssuer() {
     }
   };
    return (
-    <div>
-      <h2>Add New Issuer</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Code:</label>
-          <input
-            type="text"
-            name="code"
-            value={formData.code}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Date:</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
-        </div>
-          <div>
-          <label>Last Transaction Price:</label>
-          <input
-            type="number"
-            name="last_transaction_price"
-            value={formData.last_transaction_price}
-            onChange={handleChange}
-            required
-          />
-        </div>
-          <div>
-          <label>Max Price:</label>
-          <input
-            type="number"
-            name="max_price"
-            value={formData.max_price}
-            onChange={handleChange}
-            required
-          />
-        </div>
-          <div>
-          <label>Min Price:</label>
-          <input
-            type="number"
-            name="min_price"
-            value={formData.min_price}
-            onChange={handleChange}
-            required
-          />
-        </div>
-           <div>
-          <label>Average Price:</label>
-          <input
-            type="number"
-            name="avg_price"
-            value={formData.avg_price}
-            onChange={handleChange}
-            required
-          />
-        </div>
-           <div>
-          <label>Percentage Change:</label>
-          <input
-            type="number"
-            name="percentage_change"
-            value={formData.percentage_change}
-            onChange={handleChange}
-            required
-          />
-        </div>
-           <div>
-          <label>Quantity:</label>
-          <input
-            type="number"
-            name="quantity"
-            value={formData.quantity}
-            onChange={handleChange}
-            required
-          />
-        </div>
-           <div>
-          <label>Best traded:</label>
-          <input
-            type="number"
-            name="best_traded"
-            value={formData.best_traded}
-            onChange={handleChange}
-            required
-          />
-        </div>
-           <div>
-          <label>Total traded:</label>
-          <input
-            type="number"
-            name="total_traded"
-            value={formData.total_traded}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Add Issuer</button>
+    <div className="add-issuer-container">
+      <h2 className="add-issuer-header">Add New Issuer</h2>
+      <form onSubmit={handleSubmit} className="add-issuer-form">
+        {[
+          { label: 'Code', name: 'code', type: 'text' },
+          { label: 'Date', name: 'date', type: 'date' },
+          { label: 'Last Transaction Price', name: 'last_transaction_price', type: 'number' },
+          { label: 'Max Price', name: 'max_price', type: 'number' },
+          { label: 'Min Price', name: 'min_price', type: 'number' },
+          { label: 'Average Price', name: 'avg_price', type: 'number' },
+          { label: 'Percentage Change', name: 'percentage_change', type: 'number' },
+          { label: 'Quantity', name: 'quantity', type: 'number' },
+          { label: 'Best Traded', name: 'best_traded', type: 'number' },
+          { label: 'Total Traded', name: 'total_traded', type: 'number' },
+        ].map(({ label, name, type }) => (
+          <div className="form-group" key={name}>
+            <label htmlFor={name} className="form-label">{label}:</label>
+            <input
+              id={name}
+              type={type}
+              name={name}
+              value={formData[name]}
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
+          </div>
+        ))}
+        <button type="submit" className="submit-button">Add Issuer</button>
       </form>
     </div>
   );

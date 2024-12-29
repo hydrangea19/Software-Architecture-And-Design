@@ -7,8 +7,10 @@ tr:hover {
 }
 
 @media (max-width: 768px) {
-  .search-filter {
-    flex-direction: column;
+  .search-filter input,
+  .search-filter button {
+    flex: 1 1 100%;
+    max-width: none;
   }
 
   table, thead, tbody, th, td, tr {
@@ -97,19 +99,23 @@ button:hover {
   justify-content: center;
 }
 
-.search-filter input {
+.search-filter input,
+.search-filter button {
+  flex: 1 1 calc(20% - 10px); /* Adjusts the width dynamically */
+  min-width: 150px; /* Ensures fields don’t get too narrow */
+  max-width: 200px; /* Prevents fields from being too wide */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box; /* Ensures padding and border are included in width */
 }
 
 .search-filter button {
-  padding: 10px 20px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
+  text-align: center;
 }
 
 .search-filter button:hover {

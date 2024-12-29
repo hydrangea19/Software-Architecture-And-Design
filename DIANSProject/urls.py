@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.urls import include
-from Domashna1.dians.views import get_issuers, get_issuer, add_issuer, update_issuer, delete_issuer, get_issuer_data, get_unique_codes
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from Domashna1.dians.views import get_issuers, get_issuer, add_issuer, update_issuer, delete_issuer, get_issuer_data, get_unique_codes, CustomTokenObtainPairView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +28,6 @@ urlpatterns = [
     path('issuers/delete/<int:id>/', delete_issuer, name='delete-issuer'),
     path('api/issuers/<str:code>/data/', get_issuer_data, name='get_issuer_data'),
     path('api/issuers/codes/', get_unique_codes, name='get_unique_codes'),
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

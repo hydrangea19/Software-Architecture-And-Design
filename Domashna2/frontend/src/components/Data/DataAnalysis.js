@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getIssuerData } from '../../repository/issuerService';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import Select from 'react-select';
+import Papa from 'papaparse';
 import { Container, Row, Col, Form, Button, Spinner, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../Header/Header';
@@ -49,14 +50,19 @@ export default function DataAnalysis() {
   const [chartData, setChartData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [rawData, setRawData] = useState([]);
 
   const chartRef = useRef(null);
-
-  // Fetch unique issuer codes
+  const getAuthHeader = () => {
+    const token = localStorage.getItem('accessToken');
+    return token ? { Authorization: `Bearer ${token}` } : {};
+};
   useEffect(() => {
   async function fetchUniqueCodes() {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/issuers/codes/');
+      const response = await fetch('http://127.0.0.1:8000/api/issuers/codes/', {
+            headers: getAuthHeader(),
+        });
       if (!response.ok) {
         throw new Error(`Failed to fetch unique codes: ${response.statusText}`);
       }
@@ -95,6 +101,7 @@ export default function DataAnalysis() {
       if (!Array.isArray(data) || data.length === 0) {
         setError('No data available for the selected criteria.');
         setChartData({});
+        setRawData([]);
         setLoading(false);
         return;
       }
@@ -102,6 +109,8 @@ export default function DataAnalysis() {
       const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by date
       const labels = sortedData.map((item) => item.date);
       const values = sortedData.map((item) => item[selectedDataField.value]);
+
+       setRawData(sortedData);
 
       setChartData({
         labels: labels,
@@ -136,6 +145,21 @@ export default function DataAnalysis() {
     }
     return colors;
   };
+  const handleExportToCSV = () => {
+    if (rawData.length === 0) {
+      alert('No data available to export.');
+      return;
+    }
+
+    const csvData = Papa.unparse(rawData);
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${selectedIssuer.value}_${selectedDataField.value}_data.csv`;
+    link.click();
+  };
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -211,6 +235,16 @@ export default function DataAnalysis() {
             {graphType === 'line' && <Line data={chartData} ref={chartRef} />}
             {graphType === 'bar' && <Bar data={chartData} ref={chartRef} />}
             {graphType === 'pie' && <Pie data={chartData} ref={chartRef} />}
+          </Col>
+        </Row>
+      )}
+
+       {!loading && rawData.length > 0 && (
+        <Row className="mt-3">
+          <Col>
+            <Button variant="secondary" onClick={handleExportToCSV}>
+              Export to CSV
+            </Button>
           </Col>
         </Row>
       )}

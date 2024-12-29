@@ -1,29 +1,36 @@
 import instance from '../custom-axios/axios'
 
-export async function getIssuers(page = 1, search = '', filters = {}){
+const getAuthHeader = () => {
+    const token = localStorage.getItem('accessToken');
+    return token ? { Authorization: `Bearer ${token}` } : {};
+};
+export async function getIssuers(page = 1, search = '', filters = {}) {
+    const token = localStorage.getItem('accessToken');
+    const query = new URLSearchParams({ page, search, ...filters });
+
     try {
-    let params = { page };
+        const response = await fetch(`http://127.0.0.1:8000/issuers/?${query.toString()}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
-    if (search) {
-      params.search = search;
+        if (!response.ok) {
+            throw new Error('Failed to fetch issuers.');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching issuers:', error);
+        throw error;
     }
-
-    Object.keys(filters).forEach((key) => {
-      if (filters[key]) {
-        params[key] = filters[key];
-      }
-    });
-
-    const response = await instance.get('/issuers/', { params });
-    return response.data;
-  } catch (error) {
-    console.log('Error fetching issuers:', error);
-    throw error;
-  }
 }
 export async function getIssuer(id){
     try {
-        const response = await instance.get(`/issuers/${id}/`);
+        const response = await instance.get(`/issuers/${id}/`, {
+            headers: getAuthHeader(),
+        });
         return response.data;
     } catch (error){
         console.log("Error fetching issuer by id: " + error);
@@ -33,7 +40,9 @@ export async function getIssuer(id){
 
 export async function addIssuer(data) {
     try {
-        const response = await instance.post('/issuers/add/', data);
+        const response = await instance.post('/issuers/add/', data, {
+            headers: getAuthHeader(),
+        });
         return response.data;
     }
     catch(error) {
@@ -42,8 +51,11 @@ export async function addIssuer(data) {
     }
 }
 export async function updateIssuer(id, data) {
+
     try {
-        const response = await instance.put(`/issuers/update/${id}/`, data);
+        const response = await instance.put(`/issuers/update/${id}/`, data, {
+            headers: getAuthHeader(),
+        });
         return response.data
     }
     catch(error) {
@@ -53,19 +65,28 @@ export async function updateIssuer(id, data) {
 }
 
 export async function deleteIssuer(id) {
+    const token = localStorage.getItem('accessToken');
+
     try {
-        const response = await instance.delete(`/issuers/delete/${id}`);
-          return `Issuer with id ${id} deleted.`;
-    }
-     catch(error) {
-        console.log(`Error deleting issuer with id ${id}: `, error);
+        const response = await fetch(`/issuers/delete/${id}/`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete issuer.');
+        }
+    } catch (error) {
+        console.error('Error deleting issuer:', error);
         throw error;
     }
 }
 export async function getIssuerData(issuerCode, dataField) {
   try {
     const response = await instance.get(`/api/issuers/${issuerCode}/data/`, {
-      params: { field: dataField },
+      params: { field: dataField }, headers : getAuthHeader()
     });
     return response.data;
   } catch (error) {
