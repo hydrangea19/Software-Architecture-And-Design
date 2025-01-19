@@ -73,11 +73,42 @@ export default function Issuer() {
         }
     };
 
+    const handleFetchData = async () => {
+        try {
+            const token = localStorage.getItem('accessToken');
+            const response = await fetch('http://localhost:8000/api/fetch-data/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to trigger data fetch');
+            }
+
+            const result = await response.json();
+            alert(result.status || 'Data fetching triggered successfully');
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            alert('Error fetching data.');
+        }
+    };
+
     return (
         <div>
             <Header/>
         <div className="container">
             <h1 className="header">Issuers</h1>
+
+             {isAdmin && (
+                    <div className="fetch-data-button">
+                        <button onClick={handleFetchData}>
+                            Fetch Data
+                        </button>
+                    </div>
+                )}
 
             {}
             <div className="search-filter">

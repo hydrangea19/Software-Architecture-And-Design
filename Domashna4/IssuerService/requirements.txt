@@ -1,0 +1,7 @@
+django>=3.0,<4.0
+djangorestframework>=3.11,<4.0
+psycopg2>=2.8,<3.0
+requests
+django-filter
+djangorestframework-simplejwt
+django-cors-headers
