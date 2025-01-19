@@ -1,0 +1,9 @@
+Django>=3.2,<4.0
+psycopg2-binary==2.9.10
+djangorestframework
+requests
+asgiref
+python-dateutil
+selectolax==0.3.24
+aiohttp
+asyncio

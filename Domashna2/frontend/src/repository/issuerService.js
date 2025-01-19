@@ -9,7 +9,7 @@ export async function getIssuers(page = 1, search = '', filters = {}) {
     const query = new URLSearchParams({ page, search, ...filters });
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/issuers/?${query.toString()}`, {
+        const response = await fetch(`http://localhost:8000/issuers/?${query.toString()}`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,

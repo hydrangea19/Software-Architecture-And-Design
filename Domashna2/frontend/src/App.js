@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate  } from "react-router-dom";
 
 import StockExchangePage from './components/Home/StockExchangePage/StockExchangePage';
 import Header from './components/Header/Header';
@@ -21,7 +21,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<StockExchangePage />} />
+          <Route path="/" element={<Navigate to="/issuers" />} />
           <Route path="/data-analysis" element={<DataAnalysis />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/profile" element={<ProfilePage />} />

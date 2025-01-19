@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   stocks-db:
     image: "postgres:16"
@@ -11,3 +12,42 @@ services:
       - "5432:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+  issuer_service:
+    build:
+      context: Domashna4/IssuerService
+
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://diellza:diellza123@stocks-db:5432/stocks
+    depends_on:
+      - stocks-db
+    networks:
+      - mynetwork
+
+  data_fetching_service:
+    build:
+      context: Domashna4/DataFetchingService
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_URL=postgres://diellza:diellza123@stocks-db:5432/stocks
+    depends_on:
+      - stocks-db
+    networks:
+      - mynetwork
+
+  frontend:
+    build:
+      context: Domashna2/frontend
+    ports:
+      - "3000:80"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

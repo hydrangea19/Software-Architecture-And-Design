@@ -210,3 +210,16 @@ tr:hover {
 .pagination button:hover:not(:disabled) {
   background-color: #0056b3;
 }
+
+.fetch-data-button button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.fetch-data-button button:hover {
+    background-color: #0056b3;
+}

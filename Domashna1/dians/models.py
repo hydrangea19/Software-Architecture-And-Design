@@ -5,7 +5,7 @@ from django.db import models
 class Issuer(models.Model):
 
     class Meta:
-        app_label = 'dians'
+        db_table = 'issuers'
 
     code = models.CharField(max_length=15)
     date = models.DateField()
