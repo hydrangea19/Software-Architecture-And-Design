@@ -49,7 +49,8 @@ urlpatterns = [
         'api/issuers/codes/', get_unique_codes, name='get_unique_codes'
     ),
     path(
-        'api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'
+        'api/token/',
+        CustomTokenObtainPairView.as_view(), name='token_obtain_pair'
     ),
     path(
         'api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'

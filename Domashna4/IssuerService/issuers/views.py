@@ -82,7 +82,7 @@ def update_issuer(request, id):
             {"error": "Only admins can edit issuers"}, status=403
         )
     try:
-        issuer = Issuer.objects.get(id=id);
+        issuer = Issuer.objects.get(id=id)
     except Issuer.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -119,7 +119,6 @@ def get_issuer_data(request, code):
             {"error": "Field parameter is required."}, status=400
         )
 
-
     valid_fields = [
         'last_transaction_price',
         'max_price',
@@ -135,11 +134,9 @@ def get_issuer_data(request, code):
             {"error": "Invalid field parameter."}, status=400
         )
 
-
     data = Issuer.objects.filter(
         code__iexact=code).order_by('date').values('date', field
                                                    )
-
     if not data:
         raise Http404(
             "No data found for the given code."
@@ -179,4 +176,3 @@ def trigger_data_fetch_from_issuer(request):
 
     except requests.exceptions.RequestException as e:
         return Response({"error": str(e)}, status=500)
-
