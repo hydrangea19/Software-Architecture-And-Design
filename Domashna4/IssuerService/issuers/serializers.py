@@ -1,10 +1,13 @@
 from rest_framework import serializers
 from .models import Issuer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
 class IssuerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issuer
         fields = "__all__"
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -16,3 +19,4 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['is_superuser'] = user.is_superuser
 
         return token
+
