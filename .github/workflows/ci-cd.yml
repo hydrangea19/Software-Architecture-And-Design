@@ -47,7 +47,7 @@ jobs:
         run: npm run lint  
 
       - name: Lint Dockerfiles with Hadolint
-        uses: hadolint/hadolint-action@v1
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: |
             Domashna4/IssuerService/Dockerfile
