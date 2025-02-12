@@ -3,7 +3,8 @@ import asyncio
 import aiohttp
 
 from .scraper import WebScrapingStrategy
-from .datamanager import update_database_with_new_data, get_last_saved_date_for_code_sync
+from .datamanager import update_database_with_new_data
+from .datamanager import get_last_saved_date_for_code_sync
 from .utilities import generate_date_ranges, convert_to_date
 
 
@@ -12,12 +13,14 @@ async def fetch_all_data(strategy, dropdown_values):
     async with aiohttp.ClientSession() as session:
         tasks = []
         for code in dropdown_values:
-            last_saved_date = await get_last_saved_date_for_code_sync(code)
+            last_saved_date = await get_last_saved_date_for_code_sync(
+                code)
             if last_saved_date:
                 date_ranges = [
-                    (start, end) for start,
-                    end in date_ranges if convert_to_date(start)
-                                          > last_saved_date.date]
+                    (start, end)
+                    for start, end in date_ranges
+                    if convert_to_date(start) > last_saved_date.date
+                ]
 
             for start_date, end_date in date_ranges:
                 task = strategy.fetch_data_for_code(

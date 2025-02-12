@@ -31,7 +31,8 @@ class WebScrapingStrategy(DataFetchingStrategy):
                 ]
         return dropdown_values
 
-    async def fetch_data_for_code(self, session, url, start_date, end_date, code):
+    async def fetch_data_for_code(
+            self, session, url, start_date, end_date, code):
         data = {
             'FromDate': start_date,
             'ToDate': end_date,
