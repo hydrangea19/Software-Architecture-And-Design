@@ -20,7 +20,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from issuers.views import get_issuers, \
     get_issuer, add_issuer, update_issuer, \
     delete_issuer, get_issuer_data, get_unique_codes, \
-    CustomTokenObtainPairView, trigger_data_fetch_from_issuer
+    CustomTokenObtainPairView, trigger_data_fetch_from_issuer, health_check
 
 
 urlpatterns = [
@@ -58,4 +58,5 @@ urlpatterns = [
     path(
         'api/fetch-data/', trigger_data_fetch_from_issuer, name="fetch_data"
     ),
+    path('health/', health_check),
 ]

@@ -9,6 +9,7 @@ from .models import Issuer
 from .serializers import IssuerSerializer, CustomTokenObtainPairSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -152,6 +153,10 @@ def get_unique_codes(request):
         return JsonResponse(list(unique_codes), safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+def health_check(request):
+    return HttpResponse("OK", status=200)
 
 
 @api_view(['POST'])

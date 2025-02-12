@@ -4,6 +4,11 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .pipeline import run_pipeline
+from django.http import HttpResponse
+
+
+def health_check(request):
+    return HttpResponse("OK", status=200)
 
 
 @api_view(['POST'])

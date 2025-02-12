@@ -9,6 +9,11 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine
+
+LABEL maintainer="diellza.zaimi@gmail.com" \
+      version="1.0" \
+      description="Frontend service for Dians Project"
+
 COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 80
