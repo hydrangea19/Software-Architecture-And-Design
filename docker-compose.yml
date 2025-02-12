@@ -14,6 +14,7 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     networks:
       - mynetwork
+    restart: always
 
   issuer_service:
     build:
@@ -27,6 +28,7 @@ services:
       - stocks-db
     networks:
       - mynetwork
+    restart: always
 
   data_fetching_service:
     build:
@@ -39,6 +41,7 @@ services:
       - stocks-db
     networks:
       - mynetwork
+    restart: always
 
   frontend:
     build:
@@ -47,6 +50,7 @@ services:
       - "3000:80"
     networks:
       - mynetwork
+    restart: always
 
 networks:
   mynetwork:

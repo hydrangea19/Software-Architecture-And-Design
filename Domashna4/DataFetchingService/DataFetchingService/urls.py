@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from datafetching.views import trigger_data_fetch
+from datafetching.views import trigger_data_fetch, health_check
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +24,5 @@ urlpatterns = [
         'api/trigger-data-fetch/',
         trigger_data_fetch, name='trigger-data-fetch'
     ),
+    path('health/', health_check),
 ]
