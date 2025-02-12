@@ -6,6 +6,7 @@ from .scraper import WebScrapingStrategy
 from .datamanager import update_database_with_new_data, get_last_saved_date_for_code_sync
 from .utilities import generate_date_ranges, convert_to_date
 
+
 async def fetch_all_data(strategy, dropdown_values):
     date_ranges = generate_date_ranges(start_years_ago=10)
     async with aiohttp.ClientSession() as session:
@@ -13,10 +14,16 @@ async def fetch_all_data(strategy, dropdown_values):
         for code in dropdown_values:
             last_saved_date = await get_last_saved_date_for_code_sync(code)
             if last_saved_date:
-                date_ranges = [(start, end) for start, end in date_ranges if convert_to_date(start) > last_saved_date.date]
+                date_ranges = [
+                    (start, end) for start,
+                    end in date_ranges if convert_to_date(start)
+                                          > last_saved_date.date]
 
             for start_date, end_date in date_ranges:
-                task = strategy.fetch_data_for_code(session, strategy.base_url, start_date, end_date, code)
+                task = strategy.fetch_data_for_code(
+                    session, strategy.base_url,
+                    start_date, end_date, code
+                )
                 tasks.append(task)
 
         results = await asyncio.gather(*tasks)
