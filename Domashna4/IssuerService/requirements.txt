@@ -5,3 +5,4 @@ requests
 django-filter
 djangorestframework-simplejwt
 django-cors-headers
+flake8
