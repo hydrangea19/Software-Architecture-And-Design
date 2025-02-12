@@ -16,20 +16,45 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from issuers.views import get_issuers, get_issuer, add_issuer, update_issuer, delete_issuer, get_issuer_data, get_unique_codes, CustomTokenObtainPairView, trigger_data_fetch_from_issuer
+from rest_framework_simplejwt.views import TokenRefreshView
+from issuers.views import get_issuers, \
+    get_issuer, add_issuer, update_issuer, \
+    delete_issuer, get_issuer_data, get_unique_codes, \
+    CustomTokenObtainPairView, trigger_data_fetch_from_issuer
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('issuers/', get_issuers, name="get-issuers"),
-    path('issuers/<int:id>/', get_issuer, name='get-issuer'),
-    path('issuers/add/', add_issuer, name='add-issuer'),
-    path('issuers/update/<int:id>/', update_issuer, name='update-issuer'),
-    path('issuers/delete/<int:id>/', delete_issuer, name='delete-issuer'),
-    path('api/issuers/<str:code>/data/', get_issuer_data, name='get_issuer_data'),
-    path('api/issuers/codes/', get_unique_codes, name='get_unique_codes'),
-    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/fetch-data/', trigger_data_fetch_from_issuer, name="fetch_data"),
+    path(
+        'admin/', admin.site.urls
+    ),
+    path(
+        'issuers/', get_issuers, name="get-issuers"
+    ),
+    path(
+        'issuers/<int:id>/', get_issuer, name='get-issuer'
+    ),
+    path(
+        'issuers/add/', add_issuer, name='add-issuer'
+    ),
+    path(
+        'issuers/update/<int:id>/', update_issuer, name='update-issuer'
+    ),
+    path(
+        'issuers/delete/<int:id>/', delete_issuer, name='delete-issuer'
+    ),
+    path(
+        'api/issuers/<str:code>/data/', get_issuer_data, name='get_issuer_data'
+    ),
+    path(
+        'api/issuers/codes/', get_unique_codes, name='get_unique_codes'
+    ),
+    path(
+        'api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'
+    ),
+    path(
+        'api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'
+    ),
+    path(
+        'api/fetch-data/', trigger_data_fetch_from_issuer, name="fetch_data"
+    ),
 ]

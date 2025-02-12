@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import Http404, JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -11,6 +10,8 @@ from .serializers import IssuerSerializer, CustomTokenObtainPairSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 # Create your views here.
+
+
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
@@ -20,7 +21,8 @@ class IssuerPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 100
 
-#get issuers
+# get issuers
+
 
 @api_view(['GET'])
 def get_issuers(request):
@@ -44,17 +46,23 @@ def get_issuers(request):
     serializer = IssuerSerializer(result_page, many=True)
     return paginator.get_paginated_response(serializer.data)
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_issuer(request):
     if not request.user.is_staff:
-        return JsonResponse({"error": "Only admins can add issuers"}, status=403)
+        return JsonResponse(
+            {"error": "Only admins can add issuers"}, status=403
+        )
 
     serializer = IssuerSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(
+        serializer.errors, status=status.HTTP_400_BAD_REQUEST
+    )
+
 
 @api_view(['GET'])
 def get_issuer(request, id):
@@ -65,11 +73,14 @@ def get_issuer(request, id):
     serializer = IssuerSerializer(issuer)
     return Response(serializer.data)
 
+
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_issuer(request, id):
     if not request.user.is_staff:
-        return JsonResponse({"error": "Only admins can edit issuers"}, status=403)
+        return JsonResponse(
+            {"error": "Only admins can edit issuers"}, status=403
+        )
     try:
         issuer = Issuer.objects.get(id=id);
     except Issuer.DoesNotExist:
@@ -79,15 +90,20 @@ def update_issuer(request, id):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(
+        serializer.errors, status=status.HTTP_400_BAD_REQUEST
+    )
+
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def delete_issuer(request, id):
     if not request.user.is_staff:
-        return JsonResponse({"error": "Only admins can delete issuers"}, status=403)
+        return JsonResponse(
+            {"error": "Only admins can delete issuers"}, status=403
+        )
     try:
-        issuer = Issuer.objects.get(id=id);
+        issuer = Issuer.objects.get(id=id)
         issuer.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     except Issuer.DoesNotExist:
@@ -99,7 +115,9 @@ def get_issuer_data(request, code):
 
     field = request.query_params.get('field')
     if not field:
-        return Response({"error": "Field parameter is required."}, status=400)
+        return Response(
+            {"error": "Field parameter is required."}, status=400
+        )
 
 
     valid_fields = [
@@ -113,15 +131,22 @@ def get_issuer_data(request, code):
         'total_traded',
     ]
     if field not in valid_fields:
-        return Response({"error": "Invalid field parameter."}, status=400)
+        return Response(
+            {"error": "Invalid field parameter."}, status=400
+        )
 
 
-    data = Issuer.objects.filter(code__iexact=code).order_by('date').values('date', field)
+    data = Issuer.objects.filter(
+        code__iexact=code).order_by('date').values('date', field
+                                                   )
 
     if not data:
-        raise Http404("No data found for the given code.")
+        raise Http404(
+            "No data found for the given code."
+        )
 
     return Response(list(data), status=200)
+
 
 @api_view(['GET'])
 def get_unique_codes(request):
@@ -134,15 +159,24 @@ def get_unique_codes(request):
 
 @api_view(['POST'])
 def trigger_data_fetch_from_issuer(request):
-    datafetching_service_url = "http://localhost:8001/api/trigger-data-fetch/"
+    datafetching_service_url = (
+        "http://localhost:8001/api/trigger-data-fetch/"
+    )
 
     try:
         response = requests.post(datafetching_service_url)
 
         if response.status_code == 200:
-            return Response({"status": "Data fetching triggered successfully"}, status=200)
+            return Response(
+                {"status": "Data fetching triggered successfully"}, status=200
+            )
         else:
-            return Response({"error": "Failed to trigger data fetching"}, status=response.status_code)
+            return Response(
+                {
+                    "error": "Failed to trigger data fetching"
+                }, status=response.status_code
+            )
 
     except requests.exceptions.RequestException as e:
         return Response({"error": str(e)}, status=500)
+
