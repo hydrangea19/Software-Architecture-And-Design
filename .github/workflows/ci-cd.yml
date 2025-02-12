@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI Pipeline - Lint Only and Build/Push
 
 on:
   push:
@@ -7,10 +7,58 @@ on:
     branches: [ master ]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python for Issuer Service
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install Issuer Service Dependencies
+        working-directory: Domashna4/IssuerService
+        run: pip install --upgrade pip && pip install -r requirements.txt
+      - name: Lint Issuer Service with Flake8
+        working-directory: Domashna4/IssuerService
+        run: flake8 .
+
+      - name: Set up Python for Data Fetching Service
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: Install Data Fetching Service Dependencies
+        working-directory: Domashna4/DataFetchingService
+        run: pip install --upgrade pip && pip install -r requirements.txt
+      - name: Lint Data Fetching Service with Flake8
+        working-directory: Domashna4/DataFetchingService
+        run: flake8 .
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install Frontend Dependencies
+        working-directory: Domashna2/frontend
+        run: npm install
+      - name: Lint Frontend Code with ESLint
+        working-directory: Domashna2/frontend
+        run: npm run lint  
+
+      - name: Lint Dockerfiles with Hadolint
+        uses: hadolint/hadolint-action@v2
+        with:
+          dockerfile: |
+            Domashna4/IssuerService/Dockerfile
+            Domashna4/DataFetchingService/Dockerfile
+            Domashna2/frontend/Dockerfile
+
   build-and-push:
+    needs: lint
     runs-on: ubuntu-latest
     env:
-      DOCKERHUB_REPO: hydrangea19/dians_project 
+      DOCKERHUB_REPO: hydrangea19/dians_project
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
