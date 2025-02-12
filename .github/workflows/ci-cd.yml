@@ -35,13 +35,20 @@ jobs:
         working-directory: Domashna4/DataFetchingService
         run: flake8 .
 
-      - name: Lint Dockerfiles with Hadolint
+      - name: Lint Issuer Service Dockerfile with Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: |
-            Domashna4/IssuerService/Dockerfile
-            Domashna4/DataFetchingService/Dockerfile
-            Domashna2/frontend/Dockerfile
+          dockerfile: Domashna4/IssuerService/Dockerfile
+
+      - name: Lint Data Fetching Service Dockerfile with Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Domashna4/DataFetchingService/Dockerfile
+
+      - name: Lint Frontend Dockerfile with Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Domashna2/frontend/Dockerfile
 
   build-and-push:
     needs: lint
