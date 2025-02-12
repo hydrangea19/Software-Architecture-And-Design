@@ -22,7 +22,13 @@ class WebScrapingStrategy(DataFetchingStrategy):
             tree = HTMLParser(response.text)
             dropdown = tree.css_first('select.form-control.dropdown')
             if dropdown:
-                dropdown_values = [option.attributes['value'] for option in dropdown.css('option') if 'value' in option.attributes]
+                dropdown_values = [
+                    option.attributes[
+                        'value'
+                    ] for option in dropdown.css(
+                        'option'
+                    ) if 'value' in option.attributes
+                ]
         return dropdown_values
 
     async def fetch_data_for_code(self, session, url, start_date, end_date, code):
@@ -39,7 +45,9 @@ class WebScrapingStrategy(DataFetchingStrategy):
             'Origin': 'https://www.mse.mk',
         }
 
-        async with session.post(url, data=data, headers=headers) as response:
+        async with session.post(
+                url, data=data, headers=headers
+        ) as response:
             if response.status == 200:
                 page = await response.text()
                 tree = HTMLParser(page)
@@ -50,12 +58,21 @@ class WebScrapingStrategy(DataFetchingStrategy):
                     if len(cells) > 8:
                         data.append({
                             "code": code,
-                            "date": convert_date_format(cells[0].text()),
-                            "last_transaction_price": safe_float(cells[1].text()),
-                            "max_price": safe_float(cells[2].text()),
-                            "min_price": safe_float(cells[3].text()),
+                            "date": convert_date_format(
+                                cells[0].text()
+                            ),
+                            "last_transaction_price": safe_float(
+                                cells[1].text()
+                            ),
+                            "max_price": safe_float(
+                                cells[2].text()
+                            ),
+                            "min_price": safe_float(
+                                cells[3].text()),
                             "avg_price": safe_float(cells[4].text()),
-                            "percent_change": safe_float(cells[5].text().replace(',', '.')),
+                            "percent_change": safe_float(
+                                cells[5].text().replace(',', '.')
+                            ),
                             "quantity": safe_float(cells[6].text()),
                             "best_traded": safe_float(cells[7].text()),
                             "total_traded": safe_float(cells[8].text()),

@@ -20,5 +20,8 @@ from datafetching.views import trigger_data_fetch
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/trigger-data-fetch/', trigger_data_fetch, name='trigger-data-fetch'),
+    path(
+        'api/trigger-data-fetch/',
+        trigger_data_fetch, name='trigger-data-fetch'
+    ),
 ]
