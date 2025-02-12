@@ -70,15 +70,15 @@ jobs:
 
       - name: Build and push Issuer Service image
         run: |
-          docker build -t $DOCKERHUB_REPO/issuer_service:latest -f Domashna4/IssuerService/Dockerfile Domashna4/IssuerService
-          docker push $DOCKERHUB_REPO/issuer_service:latest
+          docker build -t $DOCKERHUB_REPO:issuer_service-latest -f Domashna4/IssuerService/Dockerfile Domashna4/IssuerService
+          docker push $DOCKERHUB_REPO:issuer_service-latest
 
       - name: Build and push Data Fetching Service image
         run: |
-          docker build -t $DOCKERHUB_REPO/data_fetching_service:latest -f Domashna4/DataFetchingService/Dockerfile Domashna4/DataFetchingService
-          docker push $DOCKERHUB_REPO/data_fetching_service:latest
+          docker build -t $DOCKERHUB_REPO:data_fetching_service-latest -f Domashna4/DataFetchingService/Dockerfile Domashna4/DataFetchingService
+          docker push $DOCKERHUB_REPO:data_fetching_service-latest
 
       - name: Build and push Frontend image
         run: |
-          docker build -t $DOCKERHUB_REPO/frontend:latest -f Domashna2/frontend/Dockerfile Domashna2/frontend
-          docker push $DOCKERHUB_REPO/frontend:latest
+          docker build -t $DOCKERHUB_REPO:frontend-latest -f Domashna2/frontend/Dockerfile Domashna2/frontend
+          docker push $DOCKERHUB_REPO:frontend-latest
