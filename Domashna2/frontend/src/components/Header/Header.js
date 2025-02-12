@@ -13,6 +13,7 @@ function Header () {
   <Link to="/data-analysis" className="navItem">Data Analysis</Link>
   <Link to="/reports" className="navItem">Reports</Link>
   <Link to="/profile" className="navItem">Profile</Link>
+    <Link to="/login" className="navItem">Login</Link>
 
 </nav>
 
