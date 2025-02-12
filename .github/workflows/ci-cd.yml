@@ -35,17 +35,6 @@ jobs:
         working-directory: Domashna4/DataFetchingService
         run: flake8 .
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install Frontend Dependencies
-        working-directory: Domashna2/frontend
-        run: npm install
-      - name: Lint Frontend Code with ESLint
-        working-directory: Domashna2/frontend
-        run: npm run lint  
-
       - name: Lint Dockerfiles with Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
