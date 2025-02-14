@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: issuer-service
+  namespace: dians-project
+spec:
+  selector:
+    app: issuer-service
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000

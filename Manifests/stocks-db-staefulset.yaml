@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stocks-db
+  namespace: dians-project
+spec:
+  serviceName: "stocks-db"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stocks-db
+  template:
+    metadata:
+      labels:
+        app: stocks-db
+    spec:
+      containers:
+      - name: stocks-db
+        image: postgres:16
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: POSTGRES_DB
+      ports:
+        - containerPort: 5432
+          volumeMounts:
+          - name: pgdata
+            mountPath: /var/lib/postgresql/data
+          volumeClaimTemplates:
+          - metadata:
+              name: pgdata
+            spec:
+              accessModes: [ "ReadWriteOnce" ]
+              storageClassName: local-path
+              resources:
+                requests:
+                  storage: 5Gi
