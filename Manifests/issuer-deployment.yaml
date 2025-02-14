@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: issuer-service
+  namespace: dians-project
+  labels:
+    app: issuer-service
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: issuer-service
+  template:
+    metadata:
+      labels:
+        app: issuer-service
+    spec:
+      containers:
+        - name: issuer-service
+          image: hydrangea19/dians_project:issuer_service-latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DATABASE_URL
+            - name: DJANGO_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DJANGO_DEBUG
+          envFrom:
+            - secretRef:
+                name: app-secrets
